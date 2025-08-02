@@ -2,120 +2,105 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import Link from "next/link"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import {
   Menu,
   X,
-  ChevronDown,
-  TrendingUp,
-  Brain,
-  Palette,
-  BarChart3,
-  Zap,
+  ChevronLeft,
+  ChevronRight,
   Star,
+  Users,
+  Award,
+  TrendingUp,
+  Mail,
+  Phone,
+  MapPin,
+  Github,
   Linkedin,
   Twitter,
-  Instagram,
-  MessageCircle,
-  ExternalLink,
-  Bot,
 } from "lucide-react"
 
-export default function Portfolio() {
+export default function ResponsiveWebsite() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [displayText, setDisplayText] = useState("")
-  const [isTypingComplete, setIsTypingComplete] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
-  const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
-
-  const fullName = "DHARMADURAI K"
-
+  // Check if mobile on mount and resize
   useEffect(() => {
-    let index = 0
-    const timer = setInterval(() => {
-      if (index < fullName.length) {
-        setDisplayText(fullName.slice(0, index + 1))
-        index++
-      } else {
-        setIsTypingComplete(true)
-        clearInterval(timer)
-      }
-    }, 200)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
 
-    return () => clearInterval(timer)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
+  const navItems = [
+    { name: "Home", href: "#hero" },
+    { name: "About", href: "#about" },
+    { name: "Gallery", href: "#gallery" },
+    { name: "Stats", href: "#stats" },
+    { name: "Contact", href: "#contact" },
+  ]
+
+  const galleryImages = [
+    { id: 1, title: "Project Alpha", category: "Web Design" },
+    { id: 2, title: "Project Beta", category: "Mobile App" },
+    { id: 3, title: "Project Gamma", category: "Branding" },
+    { id: 4, title: "Project Delta", category: "UI/UX" },
+    { id: 5, title: "Project Epsilon", category: "Development" },
+    { id: 6, title: "Project Zeta", category: "Strategy" },
+  ]
+
+  const stats = [
+    { label: "Projects Completed", value: "150+", icon: Award },
+    { label: "Happy Clients", value: "200+", icon: Users },
+    { label: "Years Experience", value: "8+", icon: Star },
+    { label: "Growth Rate", value: "95%", icon: TrendingUp },
+  ]
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
     }
     setIsMenuOpen(false)
   }
 
-  const navItems = [
-    { name: "Home", id: "hero" },
-    { name: "About", id: "about" },
-    { name: "Skills", id: "skills" },
-    { name: "Projects", id: "projects" },
-    { name: "Contact", id: "contact" },
-  ]
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % galleryImages.length)
+  }
 
-  const financialSkills = [
-    "Stock Market Analysis",
-    "Portfolio Management",
-    "Risk Assessment",
-    "Financial Planning",
-    "Investment Strategy",
-    "Market Research",
-  ]
-
-  const aiSkills = [
-    "Machine Learning",
-    "Data Analytics",
-    "AI Model Development",
-    "Algorithmic Trading",
-    "Predictive Analytics",
-    "Natural Language Processing",
-  ]
-
-  const creativeSkills = [
-    "Strategic Thinking",
-    "Content Creation",
-    "Brand Development",
-    "Public Speaking",
-    "Team Leadership",
-    "Innovation Management",
-  ]
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
+  }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
-      {/* Fixed Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">R</span>
               </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
-                DK
-              </span>
+              <span className="font-bold text-xl text-gray-900">ResponsiveWeb</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-8">
               {navItems.map((item) => (
                 <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="text-slate-300 hover:text-white transition-colors duration-200 hover:scale-105"
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
                 >
                   {item.name}
                 </button>
@@ -123,570 +108,474 @@ export default function Portfolio() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
 
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="md:hidden py-4 border-t border-slate-800"
-            >
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="block w-full text-left py-2 text-slate-300 hover:text-white transition-colors"
-                >
-                  {item.name}
-                </button>
-              ))}
-            </motion.div>
-          )}
+          {/* Mobile Navigation Menu */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden border-t border-gray-200 bg-white"
+              >
+                <div className="py-4 space-y-2">
+                  {navItems.map((item) => (
+                    <button
+                      key={item.name}
+                      onClick={() => scrollToSection(item.href)}
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors font-medium"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image with Parallax */}
-        <motion.div className="absolute inset-0" style={{ y }}>
-          <Image
-            src="/hero-banner.jpg"
-            alt="Hero Image - Dharmadurai K"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/40 to-slate-900/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
-        </motion.div>
-
-        {/* Hero Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto"
-        >
-          {/* Animated Name */}
-          <div className="mb-6">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-4">
-              <span className="gradient-text">
-                {displayText}
-                {!isTypingComplete && <span className="animate-pulse">|</span>}
-              </span>
-            </h1>
-          </div>
-
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2 }}
-            className="text-xl sm:text-2xl text-slate-300 mb-6 leading-relaxed"
-          >
-            "Empowering individuals with financial intelligence and AI innovation"
-          </motion.p>
-
-          {/* Title */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2.5 }}
-            className="flex flex-wrap justify-center gap-2 mb-8"
-          >
-            {["Entrepreneur", "SEBI Registered Investor", "AI Expert", "Author"].map((title, index) => (
-              <Badge key={index} variant="outline" className="text-sm px-3 py-1 border-blue-500/50 text-blue-300">
-                {title}
-              </Badge>
-            ))}
-          </motion.div>
-
-          {/* CTA Button */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3 }}>
-            <Button
-              onClick={() => scrollToSection("about")}
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-yellow-600 hover:from-blue-700 hover:to-yellow-700 text-white px-8 py-3 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-            >
-              Discover My Journey
-              <ChevronDown className="ml-2 w-5 h-5" />
-            </Button>
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 4 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-            className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center"
-          >
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-              className="w-1 h-3 bg-white/60 rounded-full mt-2"
-            />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="grid lg:grid-cols-2 gap-12 items-center"
-          >
+      <section id="hero" className="pt-16 min-h-screen flex items-center bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Desktop: Side-by-side layout, Mobile: Stacked */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Text Content */}
-            <div>
-              <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
-                About Me
-              </h2>
-              <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
-                <p>
-                  I am a passionate finance entrepreneur and AI expert dedicated to revolutionizing the intersection of
-                  technology and financial markets. As a SEBI registered investor, I bring deep expertise in market
-                  analysis and investment strategies.
-                </p>
-                <p>
-                  My journey spans across multiple domains - from developing cutting-edge AI solutions for financial
-                  markets to empowering individuals with financial literacy. I founded Market Healers with the vision of
-                  democratizing financial intelligence and making sophisticated investment tools accessible to everyone.
-                </p>
-                <p>
-                  Through my work, I combine traditional financial wisdom with modern AI capabilities, creating
-                  innovative solutions that help investors make informed decisions in today's dynamic markets.
-                </p>
-              </div>
-            </div>
-
-            {/* Profile Image */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="relative"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="order-2 lg:order-1"
             >
-              <div className="relative w-full max-w-md mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-2xl blur-xl opacity-30"></div>
+              <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-200">Responsive Design Expert</Badge>
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                Building{" "}
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Responsive
+                </span>{" "}
+                Experiences
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+                Creating beautiful, adaptive websites that work seamlessly across all devices. From mobile-first design
+                to desktop optimization, every pixel matters.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3"
+                  onClick={() => scrollToSection("#about")}
+                >
+                  Learn More
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-300 hover:border-blue-600 hover:text-blue-600 px-8 py-3 bg-transparent"
+                  onClick={() => scrollToSection("#contact")}
+                >
+                  Get In Touch
+                </Button>
+              </div>
+            </motion.div>
+
+            {/* Hero Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="order-1 lg:order-2"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-2xl blur-2xl opacity-20"></div>
                 <Image
-                  src="/about-profile.jpg"
-                  alt="About Dharmadurai"
-                  width={400}
+                  src="/placeholder.svg?height=500&width=600&text=Hero+Image"
+                  alt="Responsive Design Showcase"
+                  width={600}
                   height={500}
-                  className="relative rounded-2xl shadow-2xl object-cover"
+                  className="relative rounded-2xl shadow-2xl w-full h-auto"
+                  priority
                 />
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-20 bg-slate-800 relative overflow-hidden">
-        {/* Floating Profile Image - Desktop Only */}
-        <div className="hidden lg:block absolute top-8 right-8 z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gradient-to-r from-blue-500 to-yellow-500 shadow-2xl">
-              <Image
-                src="/floating-profile.jpg"
-                alt="Profile Dharmadurai"
-                width={128}
-                height={128}
-                className="object-cover w-full h-full"
-              />
-            </div>
-          </motion.div>
-        </div>
-
+      {/* About Section */}
+      <section id="about" className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
-              Skills & Expertise
-            </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              A comprehensive blend of financial acumen, technological innovation, and creative leadership
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Financial Skills */}
+          {/* Desktop: Side-by-side, Mobile: Image above text */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Image - Shows first on mobile, second on desktop */}
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
+              className="order-1 lg:order-2"
             >
-              <Card className="bg-slate-900/50 border-slate-700 hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <TrendingUp className="w-8 h-8 text-blue-400 mr-3" />
-                    <h3 className="text-xl font-semibold text-white">Financial & Market Skills</h3>
-                  </div>
-                  <div className="space-y-2">
-                    {financialSkills.map((skill, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className="flex items-center"
-                      >
-                        <Star className="w-4 h-4 text-yellow-400 mr-2" />
-                        <span className="text-slate-300">{skill}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-400 rounded-2xl blur-xl opacity-20"></div>
+                <Image
+                  src="/placeholder.svg?height=400&width=500&text=About+Image"
+                  alt="About Us"
+                  width={500}
+                  height={400}
+                  className="relative rounded-2xl shadow-xl w-full h-auto"
+                />
+              </div>
             </motion.div>
 
-            {/* AI & Tech Skills */}
+            {/* Text Content */}
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
+              className="order-2 lg:order-1"
             >
-              <Card className="bg-slate-900/50 border-slate-700 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-yellow-500/10">
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <Brain className="w-8 h-8 text-yellow-400 mr-3" />
-                    <h3 className="text-xl font-semibold text-white">AI & Tech Skills</h3>
-                  </div>
-                  <div className="space-y-2">
-                    {aiSkills.map((skill, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className="flex items-center"
-                      >
-                        <Star className="w-4 h-4 text-blue-400 mr-2" />
-                        <span className="text-slate-300">{skill}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Creative Skills */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-slate-900/50 border-slate-700 hover:border-red-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/10">
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <Palette className="w-8 h-8 text-red-400 mr-3" />
-                    <h3 className="text-xl font-semibold text-white">Creative Skills</h3>
-                  </div>
-                  <div className="space-y-2">
-                    {creativeSkills.map((skill, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className="flex items-center"
-                      >
-                        <Star className="w-4 h-4 text-red-400 mr-2" />
-                        <span className="text-slate-300">{skill}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Crafting Digital Experiences
+              </h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                With over 8 years of experience in responsive web design, I specialize in creating websites that adapt
+                beautifully to any screen size. Every project is built with mobile-first principles and desktop
+                optimization in mind.
+              </p>
+              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                From fluid grids to flexible images, I ensure your website delivers an exceptional user experience
+                across all devices and platforms.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600 mb-1">150+</div>
+                  <div className="text-sm text-gray-600">Projects</div>
+                </div>
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600 mb-1">200+</div>
+                  <div className="text-sm text-gray-600">Clients</div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Dhaleo AI Project Section */}
-      <section id="projects" className="py-20 bg-gradient-to-b from-slate-800 to-slate-900">
+      {/* Gallery Section */}
+      <section id="gallery" className="py-16 lg:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
-              Featured Project
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
-            <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 overflow-hidden">
-              <CardContent className="p-8">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <div className="flex items-center mb-4">
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                        className="w-12 h-12 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-full flex items-center justify-center mr-4"
-                      >
-                        <Bot className="w-6 h-6 text-white" />
-                      </motion.div>
-                      <h3 className="text-3xl font-bold text-white">Dhaleo AI</h3>
-                    </div>
-                    <p className="text-slate-300 text-lg leading-relaxed mb-6">
-                      A proprietary AI-powered stock screening system that revolutionizes investment decision-making
-                      through advanced machine learning algorithms and real-time market analysis.
-                    </p>
-                    <div className="space-y-3">
-                      {[
-                        "Advanced Stock Screening",
-                        "Real-time Market Analysis",
-                        "AI-Driven Insights",
-                        "Risk Assessment Tools",
-                      ].map((feature, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.1 }}
-                          viewport={{ once: true }}
-                          className="flex items-center"
-                        >
-                          <Zap className="w-5 h-5 text-yellow-400 mr-3" />
-                          <span className="text-slate-300">{feature}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="relative">
-                    <motion.div
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY }}
-                      className="bg-gradient-to-br from-blue-500/20 to-yellow-500/20 rounded-2xl p-8 backdrop-blur-sm border border-slate-600"
-                    >
-                      <BarChart3 className="w-24 h-24 text-blue-400 mx-auto mb-4" />
-                      <div className="text-center">
-                        <h4 className="text-xl font-semibold text-white mb-2">AI-Powered Analytics</h4>
-                        <p className="text-slate-400">Transforming data into actionable insights</p>
-                      </div>
-                    </motion.div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Quote Section */}
-      <section className="py-20 bg-slate-900 relative overflow-hidden">
-        {/* Animated Background Stars */}
-        <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-30"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0.3, 1, 0.3],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Number.POSITIVE_INFINITY,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8"
-        >
-          <blockquote className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            <span className="text-6xl text-blue-400">"</span>
-            <span className="gradient-text">If you can't find a way, create one.</span>
-            <span className="text-6xl text-yellow-400">"</span>
-          </blockquote>
-        </motion.div>
-      </section>
-
-      {/* Social Media & Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-b from-slate-900 to-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
-              Let's Connect
-            </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Ready to explore opportunities in finance and AI? Let's start a conversation.
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Our Work</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              A showcase of responsive designs that adapt beautifully across all devices
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                name: "LinkedIn",
-                icon: Linkedin,
-                url: "https://www.linkedin.com/in/dharmadurai-k-39a9a2293/",
-                color: "from-blue-600 to-blue-400",
-                hoverColor: "hover:shadow-blue-500/25",
-              },
-              {
-                name: "Twitter",
-                icon: Twitter,
-                url: "https://x.com/Dharma49824957",
-                color: "from-sky-500 to-sky-300",
-                hoverColor: "hover:shadow-sky-500/25",
-              },
-              {
-                name: "Instagram",
-                icon: Instagram,
-                url: "https://www.instagram.com/market.healers/",
-                color: "from-pink-600 to-orange-400",
-                hoverColor: "hover:shadow-pink-500/25",
-              },
-              {
-                name: "WhatsApp",
-                icon: MessageCircle,
-                url: "https://wa.me/qr/HXF5NZXV2KOJE1",
-                color: "from-green-600 to-green-400",
-                hoverColor: "hover:shadow-green-500/25",
-              },
-            ].map((social, index) => (
-              <motion.div
-                key={social.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
+          {/* Desktop: 3-column grid, Mobile: Carousel */}
+          {isMobile ? (
+            /* Mobile Carousel */
+            <div className="relative">
+              <div className="overflow-hidden rounded-xl">
+                <motion.div
+                  className="flex transition-transform duration-300 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {galleryImages.map((image, index) => (
+                    <div key={image.id} className="w-full flex-shrink-0">
+                      <Card className="mx-2 overflow-hidden">
+                        <div className="aspect-video bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+                          <span className="text-white font-semibold text-lg">{image.title}</span>
+                        </div>
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold text-gray-900 mb-1">{image.title}</h3>
+                          <p className="text-sm text-gray-600">{image.category}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Carousel Controls */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-colors"
               >
-                <Link href={social.url} target="_blank" rel="noopener noreferrer" className={`block group`}>
-                  <Card
-                    className={`bg-slate-900/50 border-slate-700 hover:border-transparent transition-all duration-300 hover:shadow-xl ${social.hoverColor} hover:scale-105`}
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div
-                        className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${social.color} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}
-                      >
-                        <social.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-white mb-2">{social.name}</h3>
-                      <div className="flex items-center justify-center text-slate-400 group-hover:text-white transition-colors">
-                        <span className="mr-2">Connect</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </div>
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-colors"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center mt-4 space-x-2">
+                {galleryImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentSlide ? "bg-blue-600" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Desktop Grid */
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {galleryImages.map((image, index) => (
+                <motion.div
+                  key={image.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+                    <div className="aspect-video bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                      <span className="text-white font-semibold text-lg">{image.title}</span>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-1">{image.title}</h3>
+                      <p className="text-sm text-gray-600">{image.category}</p>
                     </CardContent>
                   </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </div>
+      </section>
 
-          {/* Market Healers Link */}
+      {/* Stats Section */}
+      <section id="stats" className="py-16 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mt-12"
+            className="text-center mb-12"
           >
-            <Link
-              href="https://markethealers.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center group"
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Our Impact</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Numbers that showcase our commitment to responsive excellence
+            </p>
+          </motion.div>
+
+          {/* Desktop: Cards, Mobile: Accordion */}
+          {isMobile ? (
+            /* Mobile Accordion */
+            <Accordion type="single" collapsible className="w-full">
+              {stats.map((stat, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-left">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <stat.icon className="w-5 h-5 text-white" />
+                      </div>
+                      <span className="font-semibold">{stat.label}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="pl-13">
+                      <div className="text-3xl font-bold text-blue-600 mb-2">{stat.value}</div>
+                      <p className="text-gray-600">
+                        This metric represents our dedication to delivering high-quality responsive solutions.
+                      </p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          ) : (
+            /* Desktop Cards */
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className="text-center p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <stat.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                    <div className="text-gray-600 font-medium">{stat.label}</div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-16 lg:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Ready to create a responsive website that works beautifully on every device?
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-6"
             >
-              <Card className="bg-gradient-to-r from-slate-900 to-slate-800 border-slate-700 hover:border-yellow-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-yellow-500/25">
-                <CardContent className="px-8 py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-lg flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
-                      </svg>
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Email</h3>
+                  <p className="text-gray-600">hello@responsiveweb.com</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                  <Phone className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Phone</h3>
+                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Location</h3>
+                  <p className="text-gray-600">San Francisco, CA</p>
+                </div>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex space-x-4 pt-4">
+                {[
+                  { icon: Github, href: "#", color: "hover:bg-gray-700" },
+                  { icon: Linkedin, href: "#", color: "hover:bg-blue-600" },
+                  { icon: Twitter, href: "#", color: "hover:bg-sky-500" },
+                ].map((social, index) => (
+                  <a
+                    key={index}
+                    href={social.href}
+                    className={`w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center transition-colors ${social.color} hover:text-white`}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6 lg:p-8">
+                <CardHeader className="px-0 pt-0">
+                  <CardTitle>Send us a message</CardTitle>
+                </CardHeader>
+                <CardContent className="px-0 pb-0">
+                  <form className="space-y-4">
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                          placeholder="John"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                          placeholder="Doe"
+                        />
+                      </div>
                     </div>
-                    <div className="text-left">
-                      <h3 className="text-xl font-bold text-white group-hover:text-yellow-400 transition-colors">
-                        Market Healers
-                      </h3>
-                      <p className="text-slate-400 group-hover:text-slate-300 transition-colors">Visit our platform</p>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                      <input
+                        type="email"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                        placeholder="john@example.com"
+                      />
                     </div>
-                    <ExternalLink className="w-5 h-5 text-slate-400 group-hover:text-yellow-400 transition-colors" />
-                  </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                      <textarea
+                        rows={4}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent resize-none"
+                        placeholder="Tell us about your project..."
+                      />
+                    </div>
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                      Send Message
+                    </Button>
+                  </form>
                 </CardContent>
               </Card>
-            </Link>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 py-8">
+      <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">R</span>
               </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">
-                Dharmadurai K
-              </span>
+              <span className="font-bold text-xl">ResponsiveWeb</span>
             </div>
-            <p className="text-slate-400 mb-2">© 2024 Dharmadurai K. All rights reserved.</p>
-            <p className="text-slate-500 text-sm">
-              "Empowering individuals with financial intelligence and AI innovation"
-            </p>
+            <p className="text-gray-400 mb-4">Creating responsive experiences that work beautifully on every device</p>
+            <p className="text-gray-500 text-sm">© 2024 ResponsiveWeb. All rights reserved.</p>
           </div>
         </div>
       </footer>

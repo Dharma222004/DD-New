@@ -25,28 +25,6 @@
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
   }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
 }
 
 @layer base {
@@ -55,12 +33,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 /* Custom scrollbar */
@@ -69,26 +43,26 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-900;
+  @apply bg-gray-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gradient-to-b from-blue-500 to-yellow-500 rounded-full;
+  @apply bg-gradient-to-b from-blue-500 to-purple-500 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply from-blue-400 to-yellow-400;
+  @apply from-blue-600 to-purple-600;
 }
 
 /* Smooth animations */
 .animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -96,30 +70,44 @@ html {
   }
 }
 
-/* Parallax effect */
-.parallax {
-  transform: translateZ(0);
-  will-change: transform;
+/* Focus styles for accessibility */
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-blue-600 ring-offset-2;
 }
 
-/* Gradient text animation */
-.gradient-text {
-  background: linear-gradient(-45deg, #3b82f6, #eab308, #ef4444, #3b82f6);
-  background-size: 400% 400%;
-  animation: gradientShift 4s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Improve touch targets */
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Optimize text for mobile reading */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
 }
 
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bg-gradient-to-r {
+    @apply bg-blue-600;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

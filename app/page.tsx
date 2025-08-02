@@ -175,7 +175,7 @@ export default function ResponsiveWebsite() {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center space-x-2">
@@ -187,7 +187,7 @@ export default function ResponsiveWebsite() {
             </div>
 
             {/* Desktop Navigation - Horizontal */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex md:items-center md:space-x-8">
               {navItems.map((item) => (
                 <button
                   key={item.name}
@@ -240,22 +240,22 @@ export default function ResponsiveWebsite() {
         id="hero"
         className="pt-16 min-h-screen flex items-center bg-gradient-to-br from-blue-50 via-white to-purple-50"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12">
           {/* Desktop: Side-by-side (2 columns), Mobile: Stacked vertically */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Text Content - Responsive typography */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="order-2 lg:order-1 text-center lg:text-left"
+              className="order-2 lg:order-1 text-center lg:text-left px-4 md:px-0"
             >
               <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-200 text-sm">
                 Responsive Design Specialist
               </Badge>
 
               {/* Responsive heading sizes */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                 Building{" "}
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Adaptive
@@ -264,13 +264,13 @@ export default function ResponsiveWebsite() {
               </h1>
 
               {/* Responsive paragraph sizing */}
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 Creating beautiful, responsive websites that work seamlessly across all devices. From mobile-first
                 design to desktop optimization, every pixel is crafted with precision and purpose.
               </p>
 
               {/* Responsive button layout */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-base sm:text-lg"
@@ -313,17 +313,17 @@ export default function ResponsiveWebsite() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="about" className="py-12 md:py-16 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           {/* Desktop: Side-by-side, Mobile: Image above text (stacked) */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Image - Shows first on mobile, second on desktop */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="order-1 lg:order-2"
+              className="order-1 lg:order-2 px-4 md:px-0"
             >
               <div className="relative max-w-md sm:max-w-lg mx-auto lg:max-w-none">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-400 rounded-2xl blur-xl opacity-20"></div>
@@ -348,12 +348,12 @@ export default function ResponsiveWebsite() {
               <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-6">
                 Crafting Digital Experiences That Adapt
               </h2>
-              <p className="text-base sm:text-lg text-gray-600 mb-6 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 leading-relaxed">
                 With over 8 years of experience in responsive web design, we specialize in creating websites that adapt
                 beautifully to any screen size. Every project is built with mobile-first principles and desktop
                 optimization in mind.
               </p>
-              <p className="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
                 From fluid grids to flexible images, we ensure your website delivers an exceptional user experience
                 across all devices and platforms. Our approach combines technical excellence with creative vision.
               </p>
@@ -383,8 +383,8 @@ export default function ResponsiveWebsite() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="services" className="py-12 md:py-16 lg:py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -393,13 +393,13 @@ export default function ResponsiveWebsite() {
             className="text-center mb-12 lg:mb-16"
           >
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4">Our Services</h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               Comprehensive responsive design solutions that ensure your website looks perfect on every device
             </p>
           </motion.div>
 
           {/* Responsive services grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 px-4 md:px-0">
             {services.map((service, index) => (
               <motion.div
                 key={index}
@@ -426,8 +426,8 @@ export default function ResponsiveWebsite() {
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="gallery" className="py-12 md:py-16 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -436,7 +436,7 @@ export default function ResponsiveWebsite() {
             className="text-center mb-12 lg:mb-16"
           >
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4">Our Portfolio</h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               A showcase of responsive designs that adapt beautifully across all devices
             </p>
           </motion.div>
@@ -509,7 +509,7 @@ export default function ResponsiveWebsite() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 px-4 md:px-0"
             >
               {galleryImages.map((image, index) => (
                 <motion.div
@@ -542,8 +542,8 @@ export default function ResponsiveWebsite() {
       </section>
 
       {/* Stats Section */}
-      <section id="stats" className="py-16 lg:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="stats" className="py-12 md:py-16 lg:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -552,7 +552,7 @@ export default function ResponsiveWebsite() {
             className="text-center mb-12 lg:mb-16"
           >
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4">Our Impact</h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               Numbers that showcase our commitment to responsive excellence
             </p>
           </motion.div>
@@ -584,7 +584,7 @@ export default function ResponsiveWebsite() {
             </Accordion>
           ) : (
             /* Desktop Cards */
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 px-4 md:px-0">
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
@@ -609,8 +609,8 @@ export default function ResponsiveWebsite() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="contact" className="py-12 md:py-16 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -619,20 +619,20 @@ export default function ResponsiveWebsite() {
             className="text-center mb-12 lg:mb-16"
           >
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               Ready to create a responsive website that works beautifully on every device?
             </p>
           </motion.div>
 
           {/* Desktop: Two columns, Mobile: Stacked */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start px-4 md:px-0">
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="space-y-6 lg:space-y-8"
+              className="space-y-6 lg:space-y-8 text-center lg:text-left"
             >
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -757,8 +757,8 @@ export default function ResponsiveWebsite() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="bg-gray-900 text-white py-12 md:py-16 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-6">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
@@ -766,7 +766,7 @@ export default function ResponsiveWebsite() {
               </div>
               <span className="font-bold text-xl lg:text-2xl">ResponsiveWeb</span>
             </div>
-            <p className="text-gray-400 mb-6 text-base lg:text-lg max-w-2xl mx-auto">
+            <p className="text-gray-400 mb-6 text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto">
               Creating responsive experiences that work beautifully on every device. From mobile-first design to desktop
               optimization.
             </p>
